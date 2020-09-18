@@ -1,0 +1,10 @@
+{{ ansible_managed | comment }}
+{% if frontiersquid_num_services > 1 %}
+export SQUID_NUM_SERVICES={{ frontiersquid_num_services }}
+{% endif %}
+{% if frontiersquid_max_access_log != '5G' %}
+export SQUID_MAX_ACCESS_LOG={{ frontiersquid_max_access_log }}
+{% endif %}
+{% if not frontiersquid_compress_logs %}
+export SQUID_COMPRESS_LOGS=false
+{% endif %}

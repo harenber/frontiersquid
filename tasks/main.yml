@@ -1,0 +1,43 @@
+---
+# tasks file for hephyvienna.frontiersquid
+- name: Install CERN frontier repository
+  yum_repository:
+    name: cern-frontier
+    description: cern-frontier
+    baseurl: http://frontier.cern.ch/dist/rpms/
+    enabled: yes
+    gpgcheck: yes
+    gpgkey: http://frontier.cern.ch/dist/rpms/cernFrontierGpgPublicKey
+  when: frontiersquid_enable_repo | bool
+
+- name: Install frontiersquid
+  package:
+    name: frontier-squid
+    state: present
+
+- name: Sysconfig frontiersquid
+  template:
+    dest: /etc/sysconfig/frontiersquid
+    src: frontiersquid.sysconfig.j2
+  notify: reload frontiersquid
+
+- name: Customize frontiersquid
+  template:
+    dest: /etc/squid/customize.sh
+    src: customize.sh.j2
+  notify: reload frontiersquid
+
+- name: Disable setting of sysctl in docker container
+  lineinfile:
+    path: /etc/init.d/frontier-squid
+    regexp: '^( +sysctl -q -w .*)$'
+    line: '  true #\1'
+    backrefs: yes
+  when: ansible_virtualization_type == 'docker'
+
+- name: Start frontiersquid service
+  service:
+    name: frontier-squid
+    state: started
+    enabled: yes
+  register: service_frontiersquid

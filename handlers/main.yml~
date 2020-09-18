@@ -1,0 +1,7 @@
+---
+# handlers file for hephyvienna.frontiersquid
+- name: reload frontiersquid
+  service:
+    name: frontiersquid
+    state: reloaded
+  when: not service_frontiersquid.changed

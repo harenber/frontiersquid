@@ -1,0 +1,36 @@
+#!/bin/bash
+{{ ansible_managed | comment }}
+#
+# Edit customize.sh as you wish to customize squid.conf.
+# It will not be overwritten by upgrades.
+# See customhelps.awk for information on predefined edit functions.
+# In order to test changes to this, run this to regenerate squid.conf:
+#	service frontier-squid
+# and to reload the changes into a running squid use
+#	service frontier-squid reload
+# Avoid single quotes in the awk source or you have to protect them from bash.
+#
+{% if frontiersquid_num_services > 1 %}
+WORKERS=1
+SERVICES=${SQUID_NUM_SERVICES:-1}
+HOSTNAME=`hostname`
+{% endif %}
+awk --file `dirname $0`/customhelps.awk --source '{
+{% if frontiersquid_customize is defined %}
+{{ frontiersquid_customize }}
+{% else %}
+setoption("acl NET_LOCAL src", "{{ frontiersquid_net_local | join(' ') }}")
+setoption("cache_mem", "{{ frontiersquid_cache_mem }}")
+{%   if frontiersquid_workers > 1 %}
+setoption("workers", {{ frontiersquid_workers }} )
+setoptionparameter("cache_dir", 2, "/var/cache/squid/squid${process_number}")
+{%   endif %}
+{%   if frontiersquid_cache_disk %}
+setoptionparameter("cache_dir", 3, "{{ frontiersquid_cache_disk }}")
+{%   endif %}
+{%   if frontiersquid_cpu_affinity %}
+setoption("cpu_affinity_map", "process_numbers={{ range(1,frontiersquid_workers) | join(',') }} cores={{ range(2,frontiersquid_workers+1) | join(',') }}")
+{%   endif %}
+{% endif %}
+print
+}'

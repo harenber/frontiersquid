@@ -1,0 +1,12 @@
+---
+# defaults file for hephyvienna.frontiersquid
+frontiersquid_enable_repo: false
+frontiersquid_num_services: 1
+frontiersquid_max_access_log: 5G
+frontiersquid_compress_logs: true
+frontiersquid_net_local:
+  - 0.0.0.0/0
+frontiersquid_cache_mem: 128 MB
+frontiersquid_cache_disk: 10000
+frontiersquid_workers: 1
+frontiersquid_cpu_affinity: false

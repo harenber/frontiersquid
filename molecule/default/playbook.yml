@@ -1,0 +1,28 @@
+---
+- name: Converge
+  hosts: all
+
+  roles:
+    - role: hephyvienna.frontiersquid
+      vars:
+        frontiersquid_enable_repo: true
+        frontiersquid_workers: 2
+        frontiersquid_cpu_affinity: true
+
+  tasks:
+    #
+    # Smoketest: Access the database and produce a cache hit
+    # A test will check the log file for it
+    #
+    - name: Get the fnget command
+      get_url:
+        url: http://frontier.cern.ch/dist/fnget.py
+        dest: /usr/local/bin/fnget.py
+        mode: 0755
+
+    - name: Access frontier database
+      command: fnget.py --url=http://cmsfrontier.cern.ch:8000/FrontierProd/Frontier --sql="select 1 from dual"
+      environment:
+        http_proxy: http://localhost:3128
+      loop: "{{ range(2) | list }}"
+      changed_when: false
