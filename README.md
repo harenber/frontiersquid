@@ -1,6 +1,6 @@
 # frontiersquid Ansible Role
 
-This is derived from the module from Dietrich Liko found [here](https://gitlab.cern.ch/hephyvienna/ansible/role/frontiersquid). It contains a couple of bugfixes (unfortunately, the original gitlab repo did neither contain a bug tracker now pull requests. This is the reason for the fork.)
+This is derived from the module from Dietrich Liko found [here](https://gitlab.cern.ch/hephyvienna/ansible/role/frontiersquid). It contains a couple of bugfixes (unfortunately, the original gitlab repo did neither contain a bug tracker nor pull requests. This is the reason for the fork.)
 
 Install and configure a [Frontier squid cache](https://twiki.cern.ch/twiki/bin/view/Frontier/InstallSquid)
 
