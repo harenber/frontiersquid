@@ -67,9 +67,11 @@ Disable compressing of log files
 
 MIT
 
-## Author Information
+(## Author Information
 
 Written by [Dietrich Liko](http://hephy.at/dliko) in May 2019
 
 [Institute for High Energy Physics](http://www.hephy.at) of the
 [Austrian Academy of Sciences](http://www.oeaw.ac.at)
+
+Bugfixes/Enhancesments by Torsten Harenberg for [the Pleiades HPC Cluster at the University of Wuppertal](http://www.pleiades.uni-wuppertal.de)
